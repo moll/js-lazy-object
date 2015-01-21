@@ -1,3 +1,5 @@
+var has = Object.hasOwnProperty
+var isEnumerable = Object.propertyIsEnumerable
 var DEFAULTS = {configurable: true, enumerable: true, writable: true}
 
 exports.defineLazyProperty = function(obj, key, fn, opts) {
@@ -27,11 +29,10 @@ function describe(key, fn, opts) {
   }
 
   function set(value) {
-    // Regular setter should behave like a plain property assignment.
     Object.defineProperty(this, key, {
       value: value,
       configurable: true,
-      enumerable: true,
+      enumerable: has.call(this, key) ? isEnumerable.call(this, key) : true,
       writable: true
     })
   }

@@ -114,6 +114,29 @@ describe("LazyObject", function() {
       Object.getOwnPropertyDescriptor(obj, "abc").writable.must.be.true()
     })
 
+    it("must use existing enumerability after writing", function() {
+      var obj = defineLazyProperty({}, "abc", noop)
+      Object.defineProperty(obj, "abc", {enumerable: false})
+      obj.abc = 42
+
+      obj.abc.must.equal(42)
+      Object.getOwnPropertyDescriptor(obj, "abc").configurable.must.be.true()
+      Object.getOwnPropertyDescriptor(obj, "abc").enumerable.must.be.false()
+      Object.getOwnPropertyDescriptor(obj, "abc").writable.must.be.true()
+    })
+
+    it("must be enumerable after writing when inherited", function() {
+      var prototype = defineLazyProperty({}, "abc", noop, {
+        configurable: true, writable: true
+      })
+
+      var obj = Object.create(prototype)
+      obj.abc = 42
+      Object.getOwnPropertyDescriptor(obj, "abc").configurable.must.be.true()
+      Object.getOwnPropertyDescriptor(obj, "abc").enumerable.must.be.true()
+      Object.getOwnPropertyDescriptor(obj, "abc").writable.must.be.true()
+    })
+
     it("must not be writable if set so", function() {
       var obj = {}
       defineLazyProperty(obj, "abc", function() { return 42 }, {}).abc = 69
