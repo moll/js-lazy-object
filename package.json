@@ -1,6 +1,6 @@
 {
 	"name": "lazy-object",
-	"version": "1.0.0",
+	"version": "1.0.1",
 	"description": "Define lazy properties on objects that are initialized once and only when accessed. Also known as a lazy initialization and cached/memoized getters.",
 	"keywords": [
 		"cache",
